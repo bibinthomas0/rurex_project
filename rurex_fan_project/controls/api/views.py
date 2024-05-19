@@ -1,8 +1,8 @@
-from controls.api.serializer import FanSerializer
+from controls.api.serializer import FanSerializer,LogSerializer
 from rest_framework.views import APIView
 from controls.models import Fan, FanLogDetails
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status,generics
 from datetime import datetime
 
 
@@ -84,3 +84,7 @@ class GetPowerdetails(APIView):
             return Response(data=data, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+class GetLogs(generics.ListAPIView):
+    queryset = FanLogDetails.objects.all()
+    serializer_class = LogSerializer

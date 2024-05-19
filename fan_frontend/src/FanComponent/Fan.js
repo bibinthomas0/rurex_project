@@ -5,6 +5,19 @@ import { Switch } from "@chakra-ui/react";
 import { Radio, RadioGroup, Stack,CircularProgress } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
+import {
+    Table,
+    Thead,
+    Tbody,
+    Tfoot,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    TableContainer,
+  } from '@chakra-ui/react'
+
+
 
 const Fan = () => {
   const [fanstatus, setFanstatus] = useState(false);
@@ -13,6 +26,25 @@ const Fan = () => {
   const [endDate, setEndDate] = useState("");
   const [error, setError] = useState("");
   const [energyData, setEnergyData] = useState(null);
+  const [logs, setLogs] = useState([]);
+
+
+  useEffect(() => {
+    const fetchLogs = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/logs/');
+        setLogs(response.data);
+      } catch (error) {
+        setError('There was an error fetching the logs!');
+      }
+    };
+
+    fetchLogs();
+  }, [fanstatus,speed]);
+
+
+
+
   useEffect(() => {
     GetfanDetails();
   }, []);
@@ -178,6 +210,41 @@ const Fan = () => {
             <p>Energy: {energyData.power}</p>
           </div>
         ) : null}
+
+<TableContainer>
+  <Table size='sm'>
+    <Thead>
+      <Tr>
+        <Th>Changes</Th>
+        <Th>Fan Status</Th>
+        <Th >Speed Level</Th>
+        <Th >Time</Th>
+      </Tr>
+    </Thead>
+    <Tbody>
+
+        {logs.map((ev,key)=>{
+            return(
+                <Tr key={ev.id}>
+                <Td>{ev.change}</Td>
+                <Td >{ev.status?"ON":"OFF "}</Td> 
+
+                <Td>{ev.speed_level}</Td>
+                <Td >{ev.timestamp}</Td>
+              </Tr>
+
+        )
+        })}
+     
+    
+    
+    </Tbody>
+  
+  </Table>
+</TableContainer>
+
+
+
       </div>
     </div>
   );
