@@ -78,8 +78,10 @@ class GetPowerdetails(APIView):
             power = current * voltage * power_factor
             start_date = datetime.strptime(start_date_str, "%Y-%m-%dT%H:%M")
             end_date = datetime.strptime(end_date_str, "%Y-%m-%dT%H:%M")
-            date_difference = end_date - start_date
-            energy = power * date_difference
+            time_difference = end_date - start_date
+            hours_difference = time_difference.total_seconds() / 3600
+
+            energy = power * hours_difference
             data = {"power": power, "energy": energy}
             return Response(data=data, status=status.HTTP_200_OK)
         except:

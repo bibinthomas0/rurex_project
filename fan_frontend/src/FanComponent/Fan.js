@@ -205,9 +205,9 @@ const Fan = () => {
         <h2 color="red">{error}</h2>
         {energyData ? (
           <div>
-            <h1>Energy Data</h1>
-            <p>Power: {energyData.energy}</p>
-            <p>Energy: {energyData.power}</p>
+            <h1>Data</h1>
+            <p>Power: {energyData.energy}P</p>
+            <p>Energy: {energyData.power}E</p>
           </div>
         ) : null}
 
